@@ -1,0 +1,43 @@
+---
+// Page dynamique : une URL /projets/<slug>/ par fichier Markdown de la collection.
+// getStaticPaths() liste toutes les pages à générer au build (SSG).
+import { getCollection, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+
+export async function getStaticPaths() {
+  const projets = await getCollection("projets", ({ data }) => data.publie);
+  return projets.map((projet) => ({
+    params: { slug: projet.id },
+    props: { projet },
+  }));
+}
+
+const { projet } = Astro.props;
+// render() transforme le Markdown en composant <Content /> affichable
+const { Content } = await render(projet);
+---
+
+<Base titre={`${projet.data.titre} — Portfolio`} description={projet.data.resume}>
+  <article>
+    <header class="article-entete">
+      <h1>{projet.data.titre}</h1>
+      <p class="article-meta">
+        {projet.data.periode} · {projet.data.stack.join(" · ")}
+      </p>
+      <p class="article-liens">
+        <a href={projet.data.repo} target="_blank" rel="noopener noreferrer">Dépôt GitHub</a>
+        {
+          projet.data.demo && (
+            <a href={projet.data.demo} target="_blank" rel="noopener noreferrer">
+              Démo en ligne
+            </a>
+          )
+        }
+      </p>
+    </header>
+
+    <div class="article-corps">
+      <Content />
+    </div>
+  </article>
+</Base>

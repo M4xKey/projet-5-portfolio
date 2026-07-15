@@ -1,0 +1,52 @@
+---
+// Layout de base : structure HTML commune à toutes les pages.
+// Chaque page passe son titre et sa description via les props.
+import "../styles/global.css";
+
+interface Props {
+  titre: string;
+  description: string;
+}
+
+const { titre, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{titre}</title>
+    <!-- Open Graph : aperçu propre quand une page est partagée (LinkedIn, etc.) -->
+    <meta property="og:title" content={titre} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site)} />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="conteneur">
+        <a href="/">Prénom NOM</a>
+        <nav>
+          <a href="/#projets">Projets</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- <slot /> = l'endroit où Astro injecte le contenu de chaque page -->
+    <main class="conteneur">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="conteneur">
+        <p>
+          &copy; 2026 Prénom NOM —
+          <a href="https://github.com/M4xKey">GitHub</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

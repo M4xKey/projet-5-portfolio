@@ -1,0 +1,13 @@
+---
+// Page 404 personnalisée : Vercel la sert automatiquement
+// pour toute URL qui ne correspond à aucune page générée.
+import Base from "../layouts/Base.astro";
+---
+
+<Base titre="Page introuvable — Portfolio" description="Cette page n'existe pas.">
+  <section class="hero">
+    <h1>404 — Page introuvable</h1>
+    <p>Cette page n'existe pas (ou plus).</p>
+    <p><a href="/">← Retour à l'accueil</a></p>
+  </section>
+</Base>

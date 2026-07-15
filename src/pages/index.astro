@@ -1,0 +1,48 @@
+---
+// Page d'accueil : courte bio + grille des études de cas.
+// Les projets viennent de la collection Markdown (src/content/projets/).
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+
+// On ne garde que les projets publiés, triés par ordre croissant
+const projets = (await getCollection("projets", ({ data }) => data.publie)).sort(
+  (a, b) => a.data.ordre - b.data.ordre
+);
+---
+
+<Base
+  titre="Prénom NOM — Développeur web"
+  description="Portfolio de Prénom NOM : projets web (HTML/CSS, JavaScript, Node/Express, React) racontés en études de cas."
+>
+  <section class="hero">
+    <h1>Prénom NOM</h1>
+    <p class="tagline">Développeur web en formation — HTML/CSS · JavaScript · Node · React</p>
+    <p>
+      Écris ici une courte présentation en deux ou trois phrases : ton parcours,
+      ce que tu construis en ce moment, ce que tu recherches. Chaque projet
+      ci-dessous est raconté en étude de cas : le contexte, les choix techniques,
+      les difficultés rencontrées et ce que j'en ai appris.
+    </p>
+  </section>
+
+  <section id="projets">
+    <h2>Projets</h2>
+    <ul class="projets-grille">
+      {
+        projets.map((projet) => (
+          <li class="projet-carte">
+            <h3>
+              <a href={`/projets/${projet.id}/`}>{projet.data.titre}</a>
+            </h3>
+            <p class="resume">{projet.data.resume}</p>
+            <p class="stack">
+              {projet.data.stack.map((techno) => (
+                <span class="badge">{techno}</span>
+              ))}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
